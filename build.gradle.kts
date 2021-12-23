@@ -6,12 +6,19 @@ val logbackVersion = "1.2.8"
 val exposedVersion = "0.36.1"
 
 plugins {
+    application
+
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.serialization") version "1.6.0"
 }
 
 group = "com.reephub.praeter"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("com.reephb.praeter.ApplicationKt")
+}
+
 
 repositories {
     mavenCentral()
@@ -44,7 +51,7 @@ dependencies {
 
     implementation("io.ktor:ktor-serialization:$ktorVersion")
 
-
+    implementation("com.h2database:h2:1.4.191")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
