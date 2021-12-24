@@ -4,16 +4,15 @@ import com.reephub.praeter.user.User
 import com.reephub.praeter.user.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.io.Closeable
 
-class UsersDao(val db:Database) : DAOInterface{
-    override fun init() = transaction(db){
+class UsersDao(val db: Database) : DAOInterface {
+    override fun init() = transaction(db) {
         addLogger(StdOutSqlLogger)
 
         SchemaUtils.create(Users)
     }
 
-    override fun createUser(title: String, description: String)= transaction(db){
+    override fun createUser(title: String, description: String) = transaction(db) {
         Users.insert {
             it[Users.firstName] = title
             it[Users.lastName] = description
@@ -21,7 +20,7 @@ class UsersDao(val db:Database) : DAOInterface{
         Unit
     }
 
-    override fun updateUser(id: Int, title: String, description: String)= transaction(db){
+    override fun updateUser(id: Int, title: String, description: String) = transaction(db) {
         Users.update({ Users.id eq id.toString() }) {
             it[Users.firstName] = title
             it[Users.firstName] = description
@@ -29,7 +28,7 @@ class UsersDao(val db:Database) : DAOInterface{
         Unit
     }
 
-    override fun deleteUser(id: Int)  = transaction(db){
+    override fun deleteUser(id: Int) = transaction(db) {
         Users.deleteWhere { Users.id eq id.toString() }
         Unit
     }

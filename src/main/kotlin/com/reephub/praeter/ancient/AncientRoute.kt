@@ -6,7 +6,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-val ancientStorage = mutableListOf<Ancient>(
+val ancientStorage = mutableListOf(
     Ancient("0", "Chez Saint-Honoré", 48.8746168, 2.4634656),
     Ancient("1", "La Case d'Eugénie", 48.8752278, 2.4618618)
 )

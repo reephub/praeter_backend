@@ -7,10 +7,43 @@ import io.ktor.response.*
 import io.ktor.routing.*
 
 
-val users = mutableListOf<User>(
-    User("Male", "Michael", "Lawrence", "mike@test.fr", "test","+33645789312", "20/08/1993",isPremium = true, isCustomer = true, isProvider = false),
-    User("Female", "Jane", "Doe", "janedoe@test.fr", "test","+33645789312", "01/08/1991",isPremium = true, isCustomer = true, isProvider = false),
-    User("Male", "John", "Smith", "johnsmith@test.fr", "test","+33645789312", "25/02/1988",isPremium = true, isCustomer = true, isProvider = false)
+val users = mutableListOf(
+    User(
+        "Male",
+        "Michael",
+        "Lawrence",
+        "mike@test.fr",
+        "test",
+        "+33645789312",
+        "20/08/1993",
+        isPremium = true,
+        isCustomer = true,
+        isProvider = false
+    ),
+    User(
+        "Female",
+        "Jane",
+        "Doe",
+        "janedoe@test.fr",
+        "test",
+        "+33645789312",
+        "01/08/1991",
+        isPremium = true,
+        isCustomer = true,
+        isProvider = false
+    ),
+    User(
+        "Male",
+        "John",
+        "Smith",
+        "johnsmith@test.fr",
+        "test",
+        "+33645789312",
+        "25/02/1988",
+        isPremium = true,
+        isCustomer = true,
+        isProvider = false
+    )
 )
 
 

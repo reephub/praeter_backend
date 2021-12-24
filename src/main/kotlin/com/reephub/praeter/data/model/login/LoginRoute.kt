@@ -6,10 +6,9 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.serialization.json.*
 
 
-val users = mutableListOf<User>(
+val users = mutableListOf(
     User(
         "Male",
         "Michael",
@@ -80,6 +79,7 @@ fun Route.loginRoute() {
         // User logging is okay
         println("User logging is okay")
 
-        call.respond(HttpStatusCode.OK,  "{ \"message\": \"Login okay\"}")
+        // TODO : Return user object with token
+        call.respond(HttpStatusCode.OK, "{ \"message\": \"Login okay\"}")
     }
 }
