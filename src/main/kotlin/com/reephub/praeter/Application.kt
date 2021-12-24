@@ -3,6 +3,7 @@ package com.reephub.praeter
 import com.reephub.praeter.ancient.registerAncientRoutes
 import com.reephub.praeter.classes.registerClassesRoutes
 import com.reephub.praeter.data.dao.UsersDao
+import com.reephub.praeter.data.model.login.registerLoginRoute
 import com.reephub.praeter.user.Users
 import com.reephub.praeter.user.registerUsersRoute
 import io.ktor.application.*
@@ -80,6 +81,7 @@ fun Application.module(testing: Boolean = false) {
     println("Listening on port $port")
 
     embeddedServer(Netty, host = "192.168.0.48", port = 8100) {
+//    embeddedServer(Netty, host = "192.168.0.136", port = 8100) {
 
         install(ContentNegotiation) {
             json(Json {
@@ -88,7 +90,7 @@ fun Application.module(testing: Boolean = false) {
             })
         }
 
-        // registerCustomerRoutes()
+        registerLoginRoute()
         registerUsersRoute()
         registerOrderRoutes()
         registerClassesRoutes()
