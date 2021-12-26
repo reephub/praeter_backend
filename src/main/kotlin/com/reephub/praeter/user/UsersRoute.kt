@@ -5,6 +5,10 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import java.io.UnsupportedEncodingException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import kotlin.experimental.and
 
 
 val users = mutableListOf(
@@ -62,11 +66,74 @@ fun Application.registerUsersRoute() {
 fun Route.addUserRoute() {
     post {
         val user = call.receive<User>()
-        print("received : $user")
-        users.add(user)
-        call.respond(HttpStatusCode.Created, "User saved")
+        print("received : $user \n")
+
+        if (user.password.isNullOrBlank()) {
+            println("ERROR - Password MUST NOT be null \n")
+
+            call.respond(
+                HttpStatusCode.Unauthorized,
+                UserResponse(
+                    HttpStatusCode.Unauthorized.value,
+                    " Password MUST NOT be null",
+                    ""
+                )
+            )
+        } else {
+
+            var token = ""
+
+            try {
+                // Convert to SHA-1
+                val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
+                val textByteArray: ByteArray = "${user.password} ".toByteArray(charset("iso-8859-1"))
+
+                digest.update(textByteArray, 0, textByteArray.size)
+
+                val sha1hash: ByteArray = digest.digest()
+
+                val sb = StringBuilder()
+                for (b in sha1hash) {
+                    var halfByte: Int = b.toInt() ushr 4 and 0x0F
+                    var twoHalfs: Int = 0
+
+                    do {
+                        sb.append(
+                            if (halfByte in 0..9) ('0'.code + halfByte).toChar() else ('0'.code + (halfByte + 10)).toChar()
+                        )
+                        halfByte = (b and 0x0F).toInt()
+                    } while (twoHalfs++ < 1)
+                }
+
+                token = sb.toString()
+
+                println("generated token : $token \n")
+
+                // Apply token to current user
+                user.token = token
+
+            } catch (exception: NoSuchAlgorithmException) {
+                exception.printStackTrace()
+            } catch (ex: UnsupportedEncodingException) {
+                ex.printStackTrace()
+            }
+
+            // Add user to list (or database table)
+            users.add(user)
+
+            call.respond(
+                HttpStatusCode.Created,
+                UserResponse(
+                    HttpStatusCode.Created.value,
+                    "User saved",
+                    token
+                )
+            )
+        }
+
     }
 }
+
 
 fun Route.getUsersRoute() {
     get {

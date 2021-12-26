@@ -31,9 +31,10 @@ data class User(
     var dateOfBirth: String?,
     var isPremium: Boolean = false,
     var isCustomer: Boolean = false,
-    var isProvider: Boolean = false,
+    var isProvider: Boolean = false
 ) {
     var id: Int = 0
+    var token: String = ""
 
     constructor(id: Int, firstName: String, lastName: String) : this(
         firstName,
