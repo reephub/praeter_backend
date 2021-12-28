@@ -1,11 +1,12 @@
 package com.reephub.praeter
 
-import com.reephub.praeter.ancient.registerAncientRoutes
-import com.reephub.praeter.classes.registerClassesRoutes
+import com.reephub.praeter.data.model.ancient.registerAncientRoutes
+import com.reephub.praeter.data.model.classes.registerClassesRoutes
 import com.reephub.praeter.data.dao.UsersDao
 import com.reephub.praeter.data.model.login.registerLoginRoute
-import com.reephub.praeter.user.Users
-import com.reephub.praeter.user.registerUsersRoute
+import com.reephub.praeter.data.model.order.registerOrderRoutes
+import com.reephub.praeter.data.model.user.Users
+import com.reephub.praeter.data.model.user.registerUsersRoute
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -17,13 +18,12 @@ import io.ktor.server.netty.*
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import registerOrderRoutes
 
 fun main(args: Array<String>): Unit {
 //    initDatabase()
 
-    val dao = UsersDao(Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver"))
-    dao.init()
+    /*val dao = UsersDao(Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver"))
+    dao.init()*/
 
     io.ktor.server.netty.EngineMain.main(args)
 }

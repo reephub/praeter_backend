@@ -1,6 +1,6 @@
 package com.reephub.praeter.data.dao
 
-import com.reephub.praeter.user.User
+import com.reephub.praeter.data.model.user.User
 import java.io.Closeable
 
 interface DAOInterface : Closeable {

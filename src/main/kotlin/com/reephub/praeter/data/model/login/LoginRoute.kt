@@ -1,51 +1,14 @@
 package com.reephub.praeter.data.model.login
 
-import com.reephub.praeter.user.User
+import com.reephub.praeter.data.model.user.User
+import com.reephub.praeter.data.model.user.convertToSHA1
+import com.reephub.praeter.data.model.user.encodedHashedPassword
+import com.reephub.praeter.data.model.user.users
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-
-
-val users = mutableListOf(
-    User(
-        "Male",
-        "Michael",
-        "Lawrence",
-        "mike@test.fr",
-        "test",
-        "+33645789312",
-        "20/08/1993",
-        isPremium = true,
-        isCustomer = true,
-        isProvider = false
-    ),
-    User(
-        "Female",
-        "Jane",
-        "Doe",
-        "janedoe@test.fr",
-        "test",
-        "+33645789312",
-        "01/08/1991",
-        isPremium = true,
-        isCustomer = true,
-        isProvider = false
-    ),
-    User(
-        "Male",
-        "John",
-        "Smith",
-        "johnsmith@test.fr",
-        "test",
-        "+33645789312",
-        "25/02/1988",
-        isPremium = true,
-        isCustomer = true,
-        isProvider = false
-    )
-)
 
 
 fun Application.registerLoginRoute() {
@@ -76,10 +39,32 @@ fun Route.loginRoute() {
             )
         }
 
-        // User logging is okay
-        println("User logging is okay")
+        // Convert to SHA-1
+        val sha1hash: ByteArray? = convertToSHA1(user.password!!)
 
-        // TODO : Return user object with token
-        call.respond(HttpStatusCode.OK, "{ \"message\": \"Login okay\"}")
+        if (null == sha1hash) {
+            println("Failed to convert to SHA-1")
+            return@post
+        }
+
+        // Encode hashed password
+        val token: String? = encodedHashedPassword(sha1hash)
+
+        println("generated token : $token \n")
+
+        if (null == token) {
+            // TODO : Return user object with token
+            call.respond(HttpStatusCode.NotFound, "{ \"message\": \"password is incorrect\"}")
+        } else {
+
+            if (null != user.token && token == users.find { it.email == user.email }!!.token) {
+
+                // User logging is okay
+                println("User logging is okay")
+
+                // TODO : Return user object with token
+                call.respond(HttpStatusCode.OK, "{ \"message\": \"Login okay\"}")
+            }
+        }
     }
 }

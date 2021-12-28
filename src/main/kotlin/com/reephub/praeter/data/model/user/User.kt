@@ -1,4 +1,4 @@
-package com.reephub.praeter.user
+package com.reephub.praeter.data.model.user
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
@@ -16,6 +16,7 @@ object Users : Table() {
     val isPremium = bool("isPremium") // Column<Boolean>
     val isCustomer = bool("isCustomer") // Column<Boolean>
     val isProvider = bool("isProvider") // Column<Boolean>
+    val token = varchar("token", length = 50) // Column<String>
 
     override val primaryKey = PrimaryKey(id, name = "PK_User_ID") // name is optional here
 }
@@ -31,10 +32,10 @@ data class User(
     var dateOfBirth: String?,
     var isPremium: Boolean = false,
     var isCustomer: Boolean = false,
-    var isProvider: Boolean = false
+    var isProvider: Boolean = false,
+    var token: String?
 ) {
     var id: Int = 0
-    var token: String = ""
 
     constructor(id: Int, firstName: String, lastName: String) : this(
         firstName,
@@ -44,8 +45,37 @@ data class User(
         null,
         null,
         null,
+        false,
+        false,
+        false,
+        ""
     ) {
         this.id = id
     }
+
+    constructor(
+        gender: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String,
+        phoneNumber: String,
+        dateOfBirth: String,
+        isPremium: Boolean,
+        isCustomer: Boolean,
+        isProvider: Boolean
+    ) : this(
+        gender,
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNumber,
+        dateOfBirth,
+        isPremium,
+        isCustomer,
+        isProvider,
+        ""
+    )
 
 }

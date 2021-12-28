@@ -1,4 +1,4 @@
-package com.reephub.praeter.classes
+package com.reephub.praeter.data.model.classes
 
 import io.ktor.application.*
 import io.ktor.http.*

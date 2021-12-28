@@ -1,4 +1,4 @@
-package com.reephub.praeter.ancient
+package com.reephub.praeter.data.model.ancient
 
 import kotlinx.serialization.Serializable
 

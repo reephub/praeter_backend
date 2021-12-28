@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "1.6.7"
 val kotlinVersion = "1.6.0"
-val logbackVersion = "1.2.8"
+val logbackVersion = "1.2.9"
 val exposedVersion = "0.36.1"
 
 plugins {
@@ -51,7 +51,7 @@ dependencies {
 
     implementation("io.ktor:ktor-serialization:$ktorVersion")
 
-    implementation("com.h2database:h2:1.4.191")
+    implementation("com.h2database:h2:2.0.202")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")

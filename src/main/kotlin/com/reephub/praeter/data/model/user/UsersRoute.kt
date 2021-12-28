@@ -1,4 +1,4 @@
-package com.reephub.praeter.user
+package com.reephub.praeter.data.model.user
 
 import io.ktor.application.*
 import io.ktor.http.*
@@ -22,7 +22,8 @@ val users = mutableListOf(
         "20/08/1993",
         isPremium = true,
         isCustomer = true,
-        isProvider = false
+        isProvider = false,
+        encodedHashedPassword(convertToSHA1("test_mike")!!)
     ),
     User(
         "Female",
@@ -34,7 +35,8 @@ val users = mutableListOf(
         "01/08/1991",
         isPremium = true,
         isCustomer = true,
-        isProvider = false
+        isProvider = false,
+        encodedHashedPassword(convertToSHA1("test")!!)
     ),
     User(
         "Male",
@@ -46,7 +48,8 @@ val users = mutableListOf(
         "25/02/1988",
         isPremium = true,
         isCustomer = true,
-        isProvider = false
+        isProvider = false,
+        encodedHashedPassword(convertToSHA1("johnSmith_45")!!)
     )
 )
 
@@ -81,31 +84,19 @@ fun Route.addUserRoute() {
             )
         } else {
 
-            var token = ""
+            var token: String? = ""
 
             try {
                 // Convert to SHA-1
-                val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
-                val textByteArray: ByteArray = "${user.password} ".toByteArray(charset("iso-8859-1"))
+                val sha1hash: ByteArray? = convertToSHA1(user.password!!)
 
-                digest.update(textByteArray, 0, textByteArray.size)
-
-                val sha1hash: ByteArray = digest.digest()
-
-                val sb = StringBuilder()
-                for (b in sha1hash) {
-                    var halfByte: Int = b.toInt() ushr 4 and 0x0F
-                    var twoHalfs: Int = 0
-
-                    do {
-                        sb.append(
-                            if (halfByte in 0..9) ('0'.code + halfByte).toChar() else ('0'.code + (halfByte + 10)).toChar()
-                        )
-                        halfByte = (b and 0x0F).toInt()
-                    } while (twoHalfs++ < 1)
+                if (null == sha1hash) {
+                    println("Failed to convert to SHA-1")
+                    return@post
                 }
 
-                token = sb.toString()
+                // Encode hashed password
+                token = encodedHashedPassword(sha1hash)
 
                 println("generated token : $token \n")
 
@@ -126,7 +117,7 @@ fun Route.addUserRoute() {
                 UserResponse(
                     HttpStatusCode.Created.value,
                     "User saved",
-                    token
+                    token!!
                 )
             )
         }
@@ -173,4 +164,45 @@ fun Route.deleteUserRoute() {
             call.respond(HttpStatusCode.NotFound, "No user found with this id $id")
         }
     }
+}
+
+
+fun convertToSHA1(password: String): ByteArray? {
+    try {
+        // Convert to SHA-1
+        val digest: MessageDigest = MessageDigest.getInstance("SHA-1")
+        val textByteArray: ByteArray = "${password}_prater_data".toByteArray(charset("iso-8859-1"))
+
+        digest.update(textByteArray, 0, textByteArray.size)
+
+        return digest.digest()
+
+    } catch (exception: NoSuchAlgorithmException) {
+        exception.printStackTrace()
+    } catch (ex: UnsupportedEncodingException) {
+        ex.printStackTrace()
+    }
+
+    return null
+}
+
+fun encodedHashedPassword(sha1hash: ByteArray): String? {
+    try {
+        val sb = StringBuilder()
+        for (b in sha1hash) {
+            var halfByte: Int = b.toInt() ushr 4 and 0x0F
+            var twoHalfs: Int = 0
+
+            do {
+                sb.append(
+                    if (halfByte in 0..9) ('0'.code + halfByte).toChar() else ('0'.code + (halfByte + 10)).toChar()
+                )
+                halfByte = (b and 0x0F).toInt()
+            } while (twoHalfs++ < 1)
+        }
+        return sb.toString()
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+    }
+    return null
 }

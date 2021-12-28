@@ -1,4 +1,4 @@
-package com.reephub.praeter.user
+package com.reephub.praeter.data.model.user
 
 import kotlinx.serialization.Serializable
 

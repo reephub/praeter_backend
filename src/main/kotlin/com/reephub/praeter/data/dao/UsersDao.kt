@@ -1,11 +1,11 @@
 package com.reephub.praeter.data.dao
 
-import com.reephub.praeter.user.User
-import com.reephub.praeter.user.Users
+import com.reephub.praeter.data.model.user.User
+import com.reephub.praeter.data.model.user.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class UsersDao(val db: Database) : DAOInterface {
+class UsersDao(private val db: Database) : DAOInterface {
     override fun init() = transaction(db) {
         addLogger(StdOutSqlLogger)
 

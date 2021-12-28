@@ -1,4 +1,4 @@
-package com.reephub.praeter.classes
+package com.reephub.praeter.data.model.classes
 
 import kotlinx.serialization.Serializable
 
