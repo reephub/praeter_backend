@@ -9,6 +9,8 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 
 fun Application.registerLoginRoute() {
@@ -54,7 +56,7 @@ fun Route.loginRoute() {
 
         if (null == token) {
             // TODO : Return user object with token
-            call.respond(HttpStatusCode.NotFound, "{ \"message\": \"password is incorrect\"}")
+            call.respond(HttpStatusCode.NotFound, buildJsonObject { put("message", "password is incorrect") })
         } else {
 
             if (null != user.token && token == users.find { it.email == user.email }!!.token) {
@@ -63,7 +65,7 @@ fun Route.loginRoute() {
                 println("User logging is okay")
 
                 // TODO : Return user object with token
-                call.respond(HttpStatusCode.OK, "{ \"message\": \"Login okay\"}")
+                call.respond(HttpStatusCode.OK, buildJsonObject { put("message", "Login okay") })
             }
         }
     }

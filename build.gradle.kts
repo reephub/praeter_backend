@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "1.6.7"
 val kotlinVersion = "1.6.0"
-val logbackVersion = "1.2.9"
+val logbackVersion = "1.2.10"
 val exposedVersion = "0.36.1"
 
 plugins {
