@@ -17,7 +17,7 @@ val users = mutableListOf(
         "Michael",
         "Lawrence",
         "mike@test.fr",
-        "test",
+        "test_mike",
         "+33645789312",
         "20/08/1993",
         isPremium = true,
